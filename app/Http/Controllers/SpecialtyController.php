@@ -12,6 +12,8 @@ class SpecialtyController extends Controller
         $this->middleware('auth');
     }
 
+    #region Views
+
     public function index()
     {
         $specialties = Specialty::all();
@@ -23,9 +25,18 @@ class SpecialtyController extends Controller
         return view('specialties.create');
     }
 
+    public function edit(Specialty $specialty)
+    {
+        return view('specialties.edit', compact('specialty'));
+    }
+    #endregion
+
+
+    #region Http methods
+
     public function save(Request $request)
     {
-       //dd($request->all());
+       //dd($request->all()); --> Imprimir en consola
        $rules = [
            'name' => 'required|min:3',
        ];
@@ -46,7 +57,6 @@ class SpecialtyController extends Controller
 
     public function update(Request $request, Specialty $specialty)
     {
-       //dd($request->all());
        $rules = [
            'name' => 'required|min:3',
        ];
@@ -59,8 +69,10 @@ class SpecialtyController extends Controller
 
        $specialty->name = $request->input('name');
        $specialty->description = $request->input('description');
-       $specialty->update();
+       $specialty->save();
 
        return redirect('/specialties');
     }
+
+    #endregion
 }
