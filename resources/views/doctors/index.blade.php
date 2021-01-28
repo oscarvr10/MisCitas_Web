@@ -43,7 +43,7 @@
                         {{ $doctor->email }}
                     </td>
                     <td>
-                        {{ $doctor->id_identity }}
+                        {{ $doctor->id_card }}
                     </td>
                     <td>                        
                         <form action="{{ url('/doctors/'.$doctor->id) }}" method="POST">
