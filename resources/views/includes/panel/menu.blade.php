@@ -3,7 +3,7 @@
 <ul class="navbar-nav">
     <li class="nav-item">
         <a class="nav-link" href="./index.html">
-            <i class="ni ni-tv-2 text-danger"></i> Dashboard
+            <i class="ni ni-tv-2 text-danger"></i> Inicio
         </a>
     </li>
     <li class="nav-item">
