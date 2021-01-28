@@ -31,6 +31,8 @@ Route::put('/specialties/{specialty}', 'SpecialtyController@update');
 Route::delete('/specialties/{specialty}', 'SpecialtyController@destroy');
 
 // Doctors
-Route::resource('doctors', 'DoctorController');
+Route::resource('doctors', 'DoctorController'); // Crea rutas para CRUD doctores (get, post, put, delete)
 
 // Pacients
+
+Route::resource('patients', 'PatientController');// Crea rutas para CRUD pacientes (get, post, put, delete)
