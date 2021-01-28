@@ -34,7 +34,7 @@ class SpecialtyController extends Controller
 
     #region Http methods
 
-    public function save(Request $request)
+    public function store(Request $request)
     {
        //dd($request->all()); --> Imprimir en consola
        $this->performValidation($request);
