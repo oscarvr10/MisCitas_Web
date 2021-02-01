@@ -15,7 +15,7 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $doctors = User::doctors()->get();
+        $doctors = User::doctors()->paginate(10);
         return view('doctors.index', compact('doctors'));
     }
 
@@ -37,13 +37,7 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'name'    => 'required|min:3',
-            'email'   => 'required|email',
-            'id_card' => 'nullable|max:18|min:18',
-            'address' => 'nullable|min:3',
-            'phone'   => 'nullable|digits:10'            
-        ];
+        $this->performValidation($request);
         $this->validate($request, $rules);
 
         //Mass assignment
@@ -90,14 +84,7 @@ class DoctorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules = [
-            'name'    => 'required|min:3',
-            'email'   => 'required|email',
-            'id_card' => 'nullable|max:18|min:18',
-            'address' => 'nullable|min:3',
-            'phone'   => 'nullable|digits:10'            
-        ];
-        $this->validate($request, $rules);
+        $this->performValidation($request);
 
         $doctor = User::doctors()->findOrFail($id);
         $data = $request->only('name','email', 'id_card', 'address', 'phone');
@@ -123,5 +110,22 @@ class DoctorController extends Controller
         $doctor->delete();
         $notification = "El médico $deletedDoctor se ha eliminado exitosamente.";
         return redirect('/doctors')->with(compact('notification'));
+    }
+
+    private function performValidation(Request $request)
+    {
+        $rules = [
+            'name'    => 'required|min:3',
+            'email'   => 'required|email',
+            'id_card' => 'nullable|max:18|min:18',
+            'address' => 'nullable|min:3',
+            'phone'   => 'nullable|digits:10'            
+        ];
+        $msssages = [
+            'name.required' => 'Es necesario ingresar un nombre',
+            'email.required' => 'Es necesario ingresar un correo electrónico.',
+        ];
+ 
+        $this->validate($request, $rules, $msssages);
     }
 }
