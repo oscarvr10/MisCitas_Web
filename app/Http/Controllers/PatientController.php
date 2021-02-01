@@ -14,7 +14,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients = User::patients()->get();
+        $patients = User::patients()->paginate(10);
         return view('patients.index', compact('patients'));
     }
 
@@ -36,7 +36,18 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->performValidation($request);
+
+        //Mass assignment
+        User::create(
+            $request->only('name','email', 'id_card', 'address', 'phone')
+            + [
+                'role' => 'patient',
+                'password' => password_hash($request->input('password'), PASSWORD_BCRYPT)
+            ]);
+        
+        $notification = "El paciente se ha registrado exitosamente.";
+        return redirect('/patients')->with(compact('notification'));
     }
 
     /**
@@ -58,7 +69,8 @@ class PatientController extends Controller
      */
     public function edit($id)
     {
-        //
+        $patient = User::patients()->findOrFail($id);
+        return view('patients.edit', compact('patient'));
     }
 
     /**
@@ -70,7 +82,18 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->performValidation($request);
+
+        $patient = User::patients()->findOrFail($id);
+        $data = $request->only('name','email', 'id_card', 'address', 'phone');
+        $password = $request->input('password');
+        if($password) 
+            $data += ['password' => password_hash($password, PASSWORD_BCRYPT)];
+
+        $patient->fill($data);
+        $patient->save();
+        $notification = "La información del paciente se ha registrado exitosamente.";
+        return redirect('/patients')->with(compact('notification'));
     }
 
     /**
@@ -79,8 +102,28 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $patient)
     {
-        //
+        $deletedPatient = $patient->name;
+        $patient->delete();
+        $notification = "El paciente $deletedPatient se ha eliminado exitosamente.";
+        return redirect('/doctors')->with(compact('notification'));
+    }
+
+    private function performValidation(Request $request)
+    {
+        $rules = [
+            'name'    => 'required|min:3',
+            'email'   => 'required|email',
+            'id_card' => 'nullable|max:18|min:18',
+            'address' => 'nullable|min:3',
+            'phone'   => 'nullable|digits:10'            
+        ];
+        $msssages = [
+            'name.required' => 'Es necesario ingresar un nombre',
+            'email.required' => 'Es necesario ingresar un correo electrónico.',
+        ];
+ 
+        $this->validate($request, $rules, $msssages);
     }
 }
