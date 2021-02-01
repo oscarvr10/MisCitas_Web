@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Doctor;
 
 class DoctorController extends Controller
 {
@@ -36,7 +37,25 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name'    => 'required|min:3',
+            'email'   => 'required|email',
+            'id_card' => 'nullable|max:18|min:18',
+            'address' => 'nullable|min:3',
+            'phone'   => 'nullable|digits:10'            
+        ];
+        $this->validate($request, $rules);
+
+        //Mass assignment
+        User::create(
+            $request->only('name','email', 'id_card', 'address', 'phone')
+            + [
+                'role' => 'doctor',
+                'password' => password_hash($request->input('password'), PASSWORD_BCRYPT)
+            ]);
+        
+        $notification = "El médico se ha registrado exitosamente.";
+        return redirect('/doctors')->with(compact('notification'));
     }
 
     /**
@@ -58,7 +77,8 @@ class DoctorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $doctor = User::doctors()->findOrFail($id);
+        return view('doctors.edit', compact('doctor'));
     }
 
     /**
