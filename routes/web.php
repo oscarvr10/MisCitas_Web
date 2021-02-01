@@ -20,7 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home'); // --> {{ route('home') }}
-Route::middleware(['auth','admin'])->group(function () {
+Route::middleware(['auth','admin'])->namespace('Admin')->group(function () {
     // Specialty
     Route::get('/specialties', 'SpecialtyController@index');
     Route::get('/specialties/create', 'SpecialtyController@create');
