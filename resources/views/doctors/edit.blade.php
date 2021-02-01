@@ -24,7 +24,7 @@
             </ul>
         </div>
         @endif
-        <form action="{{ url('doctors') }}" method="POST">
+        <form action="{{ url('doctors/'.$doctor->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="form-group">

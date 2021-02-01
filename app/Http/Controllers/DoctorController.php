@@ -90,7 +90,25 @@ class DoctorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'name'    => 'required|min:3',
+            'email'   => 'required|email',
+            'id_card' => 'nullable|max:18|min:18',
+            'address' => 'nullable|min:3',
+            'phone'   => 'nullable|digits:10'            
+        ];
+        $this->validate($request, $rules);
+
+        $doctor = User::doctors()->findOrFail($id);
+        $data = $request->only('name','email', 'id_card', 'address', 'phone');
+        $password = $request->input('password');
+        if($password) 
+            $data += ['password' => password_hash($password, PASSWORD_BCRYPT)];
+
+        $doctor->fill($data);
+        $doctor->save();
+        $notification = "La información del médico se ha registrado exitosamente.";
+        return redirect('/doctors')->with(compact('notification'));
     }
 
     /**
@@ -99,8 +117,11 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $doctor)
     {
-        //
+        $deletedDoctor = $doctor->name;
+        $doctor->delete();
+        $notification = "El médico $deletedDoctor se ha eliminado exitosamente.";
+        return redirect('/doctors')->with(compact('notification'));
     }
 }
