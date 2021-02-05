@@ -35,3 +35,7 @@ Route::middleware(['auth','admin'])->namespace('Admin')->group(function () {
     // Patients
     Route::resource('patients', 'PatientController');// Crea rutas para CRUD pacientes (get, post, put, delete)
 });
+Route::middleware(['auth','doctor'])->namespace('Doctor')->group(function () {
+    // Specialty
+    Route::get('/schedule', 'ScheduleController@edit');    
+});
