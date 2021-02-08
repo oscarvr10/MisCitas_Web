@@ -30,7 +30,7 @@
         </li>        
     @elseif (auth()->user()->role == 'doctor')
         <li class="nav-item">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="/schedule">
                 <i class="ni ni-calendar-grid-58 text-danger"></i> Gestionar Horario
             </a>
         </li>
