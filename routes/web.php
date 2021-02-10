@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,3 +40,6 @@ Route::middleware(['auth','doctor'])->namespace('Doctor')->group(function () {
     Route::get('/schedule', 'ScheduleController@edit');    
     Route::post('/schedule', 'ScheduleController@store');    
 });
+
+Route::get('/appointments/create', 'AppointmentController@create');
+Route::post('/appointments', 'AppointmentController@store');
