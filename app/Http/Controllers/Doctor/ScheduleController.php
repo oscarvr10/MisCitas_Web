@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\WorkDay;
 use Carbon\Carbon;
+use App\Utils\HoursHelper;
 
 class ScheduleController extends Controller
 {
@@ -17,18 +18,21 @@ class ScheduleController extends Controller
     public function edit()
     {
         $workDays = WorkDay::where('user_id', auth()->id())->get();
-
-        $workDays->map(function ($workDay) {
-            $workDay->morning_start = (new Carbon($workDay->morning_start))->format('g:i A');
-            $workDay->morning_end = (new Carbon($workDay->morning_end))->format('g:i A');
-            $workDay->afternoon_start = (new Carbon($workDay->afternoon_start))->format('g:i A');
-            $workDay->afternoon_end = (new Carbon($workDay->afternoon_end))->format('g:i A');
-            return $workDay;
-        });
-        
+        if ($workDays != null) {
+            $workDays->map(function ($workDay) {
+                $workDay->morning_start = (new Carbon($workDay->morning_start))->format('g:i A');
+                $workDay->morning_end = (new Carbon($workDay->morning_end))->format('g:i A');
+                $workDay->afternoon_start = (new Carbon($workDay->afternoon_start))->format('g:i A');
+                $workDay->afternoon_end = (new Carbon($workDay->afternoon_end))->format('g:i A');
+                return $workDay;
+            });
+        }
         //dd($workDays->toArray());
         $days = $this->days;
-        return view('schedule', compact('workDays', 'days'));
+        $helper = new HoursHelper();
+        $morning_hours = $helper->generateHours(7, 11, true);
+        $afternoon_hours = $helper->generateHours(1, 9, false);
+        return view('schedule', compact('workDays', 'days', "morning_hours", "afternoon_hours"));
     }
 
     public function store(Request $request)
