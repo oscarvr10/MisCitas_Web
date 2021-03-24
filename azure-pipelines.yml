@@ -63,8 +63,8 @@ stages:
                   SqlInline: 'CREATE DATABASE IF NOT EXISTS myAppointments;'
                   IpDetectionMethod: 'AutoDetect'
                     
-          - script: php artisan migrate:refresh --seed --env=production --force --no-interaction
-            displayName: "Running DB Migrations"     
+#script: php artisan migrate:refresh --seed --env=production --force --no-interaction
+#displayName: "Running DB Migrations"     
                            
           - task: ArchiveFiles@2
             displayName: 'Archive files'
