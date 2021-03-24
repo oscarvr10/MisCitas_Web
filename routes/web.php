@@ -53,15 +53,10 @@ Route::get('/', function () {
     
      Route::get('/appointments', 'AppointmentController@index');
      Route::get('/appointments/{appointment}', 'AppointmentController@show');
-
     
      Route::get('/appointments/{appointment}/cancel', 'AppointmentController@showCancelForm');
      Route::post('/appointments/{appointment}/cancel', 'AppointmentController@postCancel');
-     Route::post('/appointments/{appointment}/confirm', 'AppointmentController@postConfirm');
-
-     //JSON
-     Route::get('/specialties/{specialty}/doctors', 'Api\SpecialtyController@doctors');   
-     Route::get('/schedule/hours', 'Api\ScheduleController@hours');   
+     Route::post('/appointments/{appointment}/confirm', 'AppointmentController@postConfirm');   
  });
 
 
