@@ -48,7 +48,8 @@ stages:
           
           - script: |
               cp .env.example .env
-              php artisan key:generate --force              
+              php artisan key:generate --force
+              php artisan passport:install
             displayName: "Running Laravel config & optimizations"
           
           - task: AzureMysqlDeployment@1
