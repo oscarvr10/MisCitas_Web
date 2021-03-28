@@ -48,7 +48,7 @@ stages:
           
           - script: |
               cp .env.example .env
-              php artisan key:generate --force              
+              php artisan key:generate --force
             displayName: "Running Laravel config & optimizations"
           
           - task: AzureMysqlDeployment@1
@@ -63,8 +63,9 @@ stages:
                   SqlInline: 'CREATE DATABASE IF NOT EXISTS myAppointments;'
                   IpDetectionMethod: 'AutoDetect'
                     
-#script: php artisan migrate:refresh --seed --env=production --force --no-interaction
-#displayName: "Running DB Migrations"     
+#Run on bash from Azure App Service: 
+# php artisan migrate:refresh --seed --env=production --force --no-interaction
+# php artisan passport:install
                            
           - task: ArchiveFiles@2
             displayName: 'Archive files'
