@@ -82,6 +82,6 @@ class Appointment extends Model
         $carbonTime = Carbon::createFromFormat('g:i A',  $data['scheduled_time']);
         $data['scheduled_time'] = $carbonTime->format('H:i:s');
 
-        self::create($data);
+        return self::create($data);
     }
 }
