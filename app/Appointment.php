@@ -84,17 +84,4 @@ class Appointment extends Model
 
         return self::create($data);
     }
-
-    public function sendPushNotification($message)
-    {
-        return fcm()
-            ->to($this->device_token) // $recipients must an array
-            ->priority('high')
-            ->timeToLive(0)
-            ->notification([
-                'title' => config('app.name'),
-                'body' => $message
-            ])
-            ->send();
-    }
 }
