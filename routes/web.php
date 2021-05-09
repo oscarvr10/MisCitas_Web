@@ -39,6 +39,8 @@ Route::get('/', function () {
      Route::get('/charts/appointments/column', 'ChartController@doctors');
      Route::get('/charts/appointments/column/data', 'ChartController@doctorsJson');
 
+     //Push Notifications (FCM)
+     Route::post('/fcm/send', 'FirebaseController@sendAll');   
  });
  Route::middleware(['auth','doctor'])->namespace('Doctor')->group(function () {
      // Specialty

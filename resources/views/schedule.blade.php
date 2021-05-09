@@ -27,7 +27,7 @@
         @if (session('errors'))
         <div class="card-body">
             <div class="alert alert-danger" role="alert">
-                Los cambios se han guardado pero tomar en cuenta que:
+                Los cambios se han guardado pero toma en cuenta que:
                 <ul>
                     @foreach (session('errors') as $error)
                     <li>{{ $error }}</li>
