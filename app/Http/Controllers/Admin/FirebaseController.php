@@ -22,7 +22,7 @@ class FirebaseController extends Controller
             ])
             ->send();
         
-        $notification = "El paciente se ha registrado exitosamente.";
+        $notification = "La notificación se ha enviado a todos los usuarios exitosamente.";
         return back()->with(compact('notification'));
     }
 }

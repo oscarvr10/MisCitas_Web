@@ -5,15 +5,19 @@
 <div class="row">
     <div class="col-md-12 mb-4">
         <div class="card">
-            <div class="card-header">{{ __('Dashboard') }}</div>
-
+            <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">{{ __('Inicio') }}</h6>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 @if (session('status'))
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
                 </div>
                 @endif
-
                 {{ __('¡Bienvenido '.Auth::user()->name. '! Selecciona una opción del menú lateral') }}
             </div>
         </div>
@@ -24,7 +28,7 @@
             <div class="card-header bg-transparent">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h6 class="text-uppercase ls-1 mb-1">Notificaciones</h6>
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">Notificaciones</h6>
                         <h2 class="mb-0">Enviar notificación a todos los usuarios</h2>
                     </div>
                 </div>
