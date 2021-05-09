@@ -56,18 +56,17 @@
                             <i class="ni ni-check-bold"></i>
                         </button>
                     </form> 
-                    <a href="{{ url('/appointments/'.$appointment->id.'/cancel')}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Cancelar cita">
+                    <!--<a href="{{ url('/appointments/'.$appointment->id.'/cancel')}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Cancelar cita">
                         <i class="ni ni-fat-remove"></i>
-                    </a>
-                    @else {{-- patient --}}
+                    </a>-->
+                    {{--@else--}} {{-- patient --}}
+                    @endif
                     <form action="{{ url('/appointments/'.$appointment->id.'/cancel') }}" class="d-inline-block" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Cancelar Cita">
                             <i class="ni ni-fat-remove"></i>
                         </button>
-                    </form>
-                    @endif                   
-                    
+                    </form>                    
                 </td>
             </tr>
             @endforeach
