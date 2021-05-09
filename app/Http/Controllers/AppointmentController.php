@@ -7,8 +7,6 @@ use App\CancelledAppointment;
 use App\Http\Requests\StoreAppointment;
 use App\Interfaces\ScheduleServiceInterface;
 use App\Specialty;
-use Carbon\Carbon;
-use Validator;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -88,11 +86,11 @@ class AppointmentController extends Controller
         }*/
 
         $created = Appointment::createForPatient($request, auth()->id());
+        
         if ($created)
             $notification = 'La cita se ha registrado exitosamente';
         else
             $notification = 'Ocurrió un problema al registrar la cita médica';
-
         
         return back()->with(compact('notification'));
     }
@@ -114,7 +112,7 @@ class AppointmentController extends Controller
         if($saved)
             $appointment->patient->sendPushNotification('¡Su cita ha sido cancelada!.');
 
-        $notification = 'La cita se ha cancelado correctamente';
+        $notification = 'La cita se ha cancelado correctamente.';
         return redirect('/appointments')->with(compact('notification'));
     }
 
