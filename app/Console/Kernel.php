@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         $logPath = storage_path('logs/fcm_send.log');
         
         $schedule->command('fcm:send')
-            ->everyFiveMinutes()
+            ->everyMinute()
             ->appendOutputTo($logPath);
     }
 

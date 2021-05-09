@@ -39,11 +39,12 @@ class SendNotifications extends Command
      */
     public function handle()
     {
-        $this->info('Searching for confirmed appointments within the next 24 hours...');
+        $this->info('Searching for confirmed appointments...');
         
         // Hora actual
         $now = Carbon::now();
        
+        $headers = ['id', 'scheduled_date', 'scheduled_time', 'patient_id'];
         $appointments = $this->getAppointments24Hours($now);
         //dd($appointments);
 
@@ -52,12 +53,18 @@ class SendNotifications extends Command
             $this->info('Notification has been sent to patient with ID:'.$appointment->patient_id.' within 24 hours.');
         }
 
+        $this->info('>>>>>>> Within 24 hours');
+        $this->table($headers, $appointments);
+
         $appointmentsNextHour = $this->getAppointmentsNextHour($now);
 
         foreach($appointmentsNextHour as $appointment){
             $appointment->patient->sendPushNotification('Tu cita programada es dentro de 1 hora. ¡Te esperamos!.');
             $this->info('Notification has been sent to patient with ID:'.$appointment->patient_id.' within 1 hour.');
         }
+
+        $this->info('>>>>>>> Next hour');
+        $this->table($headers, $appointmentsNextHour);
     }
     
     private function getAppointments24Hours($now)
