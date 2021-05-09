@@ -45,7 +45,7 @@ class SendNotifications extends Command
         $now = Carbon::now();
        
         $appointments = $this->getAppointments24Hours($now);
-        dd($appointments);
+        //dd($appointments);
 
         foreach($appointments as $appointment){
             $appointment->patient->sendPushNotification('No olvides tu cita programada mañana a esta hora.');
