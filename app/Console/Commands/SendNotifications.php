@@ -45,7 +45,7 @@ class SendNotifications extends Command
         $now = Carbon::now();
        
         $headers = ['id', 'scheduled_date', 'scheduled_time', 'patient_id'];
-        $appointments = $this->getAppointments24Hours($now);
+        $appointments = $this->getAppointments24Hours($now->copy());
         //dd($appointments);
 
         foreach($appointments as $appointment){
@@ -56,7 +56,7 @@ class SendNotifications extends Command
         $this->info('>>>>>>> Within 24 hours');
         $this->table($headers, $appointments);
 
-        $appointmentsNextHour = $this->getAppointmentsNextHour($now);
+        $appointmentsNextHour = $this->getAppointmentsNextHour($now->copy());
 
         foreach($appointmentsNextHour as $appointment){
             $appointment->patient->sendPushNotification('Tu cita programada es dentro de 1 hora. ¡Te esperamos!.');
@@ -70,29 +70,21 @@ class SendNotifications extends Command
     private function getAppointments24Hours($now)
     {
         //dd($now->toDateString());
-        $now->addDay();
-        $nowSub = $now->copy()->subMinutes(3)->toTimeString();
-        $nowAdd = $now->copy()->addMinutes(2)->toTimeString();
-
         return Appointment::where('status', 'Confirmada')
-            ->where('scheduled_date', $now->toDateString())
-            ->where('scheduled_time', '>=', $nowSub)
-            ->where('scheduled_time', '<', $nowAdd)
+            ->where('scheduled_date', $now->addDay()->toDateString())
+            ->where('scheduled_time', '>=', $now->copy()->subMinutes(3)->toTimeString())
+            ->where('scheduled_time', '<', $now->copy()->addMinutes(2)->toTimeString())
             ->get(['id', 'scheduled_date', 'scheduled_time', 'patient_id'])
             ->toArray();
     }
 
     private function getAppointmentsNextHour($now)
     {
-        //dd($now->toDateString());
-        $now->addHour();
-        $nowSub = $now->copy()->subMinutes(3)->toTimeString();
-        $nowAdd = $now->copy()->addMinutes(2)->toTimeString();
-
+        //dd($now->toDateString());   
         return Appointment::where('status', 'Confirmada')
-            ->where('scheduled_date', $now->toDateString())
-            ->where('scheduled_time', '>=', $nowSub)
-            ->where('scheduled_time', '<', $nowAdd)
+            ->where('scheduled_date', $now->addHour()->toDateString())
+            ->where('scheduled_time', '>=', $now->copy()->subMinutes(3)->toTimeString())
+            ->where('scheduled_time', '<', $now->copy()->addMinutes(2)->toTimeString())
             ->get(['id', 'scheduled_date', 'scheduled_time', 'patient_id'])
             ->toArray();
     }
