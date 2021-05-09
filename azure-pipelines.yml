@@ -63,10 +63,18 @@ stages:
                   SqlInline: 'CREATE DATABASE IF NOT EXISTS myAppointments;'
                   IpDetectionMethod: 'AutoDetect'
                     
-#Run on bash from Azure App Service: 
+#Run on WebSSH from Azure App Service: 
 # php artisan migrate:refresh --seed --env=production --force --no-interaction
 # php artisan passport:install
-                           
+
+#####################################
+#Run CRON on WebSSH from Azure App Service:
+#1. apt-get update -qq 
+#2. apt-get install cron -yqq (only if cron service is not installed yet)
+#3. service cron start
+#4. crontab -e
+#5.  * * * * * cd /home/site/wwwroot && php artisan schedule:run >> /dev/null 2>&1
+#5(other option if above doesn't work). * * * * * cd /var/www/html/wwwroot && php artisan schedule:run >> /dev/null 2>&1
           - task: ArchiveFiles@2
             displayName: 'Archive files'
             inputs:
