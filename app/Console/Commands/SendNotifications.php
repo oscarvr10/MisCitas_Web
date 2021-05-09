@@ -43,7 +43,7 @@ class SendNotifications extends Command
         
         // Hora actual
         $now = Carbon::now();       
-        $headers = ['id', 'scheduled_date', 'scheduled_time', 'patient_id'];
+        $headers = ['id', 'scheduled_date', 'patient_id','scheduled_time'];
 
         $appointments = $this->getAppointments24Hours($now->copy());        
         $this->info('>>>>>>> Within 24 hours');
