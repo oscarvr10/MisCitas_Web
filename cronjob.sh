@@ -7,6 +7,5 @@ echo "Header unset \"X-Powered-By\"" >> /etc/apache2/apache2.conf
 # Installing cron and execute cron job
 apt-get update -qq && apt-get install cron -yqq
 service cron start
-(crontab -l 2>&1/dev/null; echo "* * * * * cd /home/site/wwwroot && php artisan schedule:run")|crontab
-
+(crontab -l 2>&1/dev/null; echo "* * * * * cd /home/site/wwwroot && php artisan schedule:run >> /dev/null 2>&1")|crontab
 /usr/sbin/apache2ctl -D FOREGROUND
