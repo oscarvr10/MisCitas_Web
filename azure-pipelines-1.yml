@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '21530841-bcd1-4c0c-82a8-0b9d1e470115'
+  azureSubscription: 'Visual Studio Ultimate con MSDN (59dc1cc3-4719-4700-9b47-0a4c350bc072)'
 
   # Web app name
   webAppName: 'my-appointments'
@@ -82,11 +82,10 @@ stages:
         runOnce:
           deploy:
             steps:
-            - task: AzureWebApp@1
-              displayName: 'Deploy Azure Web App : my-appointments'
+            - task: AzureRmWebAppDeployment@4
               inputs:
+                ConnectionType: 'AzureRM'
                 azureSubscription: $(azureSubscription)
                 appType: 'webApp'
-                appName: 'my-appointments'
-                package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-                deploymentMethod: 'auto'
+                WebAppName: $(webAppName)
+                packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
