@@ -88,5 +88,5 @@ stages:
                 azureSubscription: $(azureSubscription)
                 appType: 'webApp'
                 appName: 'my-appointments'
-                package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
                 deploymentMethod: 'auto'
