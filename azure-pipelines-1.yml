@@ -46,17 +46,6 @@ stages:
               php artisan key:generate --force
             displayName: "Running Laravel config & optimizations"
           
-          - task: AzureMysqlDeployment@1
-            displayName: 'Execute Azure MySQL'
-            inputs:
-                  ConnectedServiceName: $(azureSubscription)
-                  ServerName: $(ServerName)
-                  DatabaseName: 
-                  SqlUsername: $(SqlUserName)
-                  SqlPassword: $(SqlPassword)
-                  TaskNameSelector: InlineSqlTask
-                  SqlInline: 'CREATE DATABASE IF NOT EXISTS myAppointments;'
-                  IpDetectionMethod: 'AutoDetect'
                     
 #Run on WebSSH from Azure App Service: 
 # php artisan migrate:refresh --seed --env=production --force --no-interaction
