@@ -81,12 +81,14 @@ stages:
       strategy:
         runOnce:
           deploy:
-            steps:
+            steps: 
             - task: AzureRmWebAppDeployment@4
               inputs:
                 ConnectionType: 'AzureRM'
                 azureSubscription: $(azureSubscription)
                 appType: 'webApp'
-                WebAppName: $(webAppName)
+                WebAppName: 'my-appointments'
                 packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-                DeploymentType: webDeploy
+                enableCustomDeployment: true
+                DeploymentType: 'webDeploy'
+                RemoveAdditionalFilesFlag: true
