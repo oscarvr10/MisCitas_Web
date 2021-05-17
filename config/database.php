@@ -2,6 +2,32 @@
 
 use Illuminate\Support\Str;
 
+if ($connstr = env('MYSQLCONNSTR_localdb')) {
+    //MySQL In App(Azure)
+
+    $dbhost = preg_replace("/^.*Data Source=(.+?):.*$/", "\\1", $connstr);
+
+    $dbport = preg_replace("/^.*Data Source=(.+?):(.+?);.*$/", "\\2", $connstr);
+
+    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $connstr);
+
+    $dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $connstr);
+
+    $dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $connstr);
+
+} else {
+
+    $dbhost = env('DB_HOST', 'localhost');
+
+    $dbport = env('DB_PORT', '3306');
+
+    $dbname = env('DB_DATABASE', 'myAppointments');
+
+    $dbusername = env('DB_USERNAME', 'forge');
+
+    $dbpassword = env('DB_PASSWORD', '');
+
+}
 return [
 
     /*
@@ -46,11 +72,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $dbhost,    
+            'port' => $dbport,    
+            'database' => $dbname,    
+            'username' => $dbusername,    
+            'password' => $dbpassword,  
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
