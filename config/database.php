@@ -15,18 +15,6 @@ if ($connstr = env('MYSQLCONNSTR_localdb')) {
 
     $dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $connstr);
 
-} else {
-
-    $dbhost = env('DB_HOST', 'localhost');
-
-    $dbport = env('DB_PORT', '3306');
-
-    $dbname = env('DB_DATABASE', 'myAppointments');
-
-    $dbusername = env('DB_USERNAME', 'forge');
-
-    $dbpassword = env('DB_PASSWORD', '');
-
 }
 return [
 
