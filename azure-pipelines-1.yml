@@ -87,7 +87,7 @@ stages:
               inputs:
                 azureSubscription: '$(azureSubscription)'
                 appType: app
-                WebAppName: '$(Parameters.WebAppName)'
+                WebAppName: '$(webAppName)'
                 Package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
                 TakeAppOfflineFlag: true
                 UseWebDeploy: true
