@@ -2,20 +2,29 @@
 
 use Illuminate\Support\Str;
 
-if ($connstr = env('MYSQLCONNSTR_localdb')) {
-    //MySQL In App(Azure)
+$servername = "";
+$port = "";
+$username = "";
+$password = "";
+$dbname = "";
 
-    $dbhost = preg_replace("/^.*Data Source=(.+?):.*$/", "\\1", $connstr);
+// NOTE: Laravel has an issue with APN_ENV key when trying to connect to MySQL. Replace 'production' or 'local' with '127.0.0.1' in .env file
+// It solves the problem.
 
-    $dbport = preg_replace("/^.*Data Source=(.+?):(.+?);.*$/", "\\2", $connstr);
 
-    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $connstr);
-
-    $dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $connstr);
-
-    $dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $connstr);
-
+// Parsing connnection string
+foreach ($_SERVER as $key => $value) {
+    if (strpos($key, "MYSQLCONNSTR_") !== 0) {
+        continue;
+    }
+    
+    $servername = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $port = preg_replace("/^.*Data Source=(.+?);.*$/", "\\2", $value);
+    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $username = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
 }
+
 return [
 
     /*
@@ -60,11 +69,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => $dbhost,    
-            'port' => $dbport,    
-            'database' => $dbname,    
-            'username' => $dbusername,    
-            'password' => $dbpassword,  
+            'host' => $servername,
+            'port' => $port,
+            'database' => $dbname,
+            'username' => $username,
+            'password' => $password,
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -72,10 +81,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'sslmode' => env('DB_SSLMODE', 'prefer'),
-            'options' => (env('MYSQL_SSL') && extension_loaded('pdo_mysql')) ? [
-                PDO::MYSQL_ATTR_SSL_KEY    => '/ssl/DigiCertGlobalRootCA.crt.pem',
-            ] : []
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
 
         'pgsql' => [
