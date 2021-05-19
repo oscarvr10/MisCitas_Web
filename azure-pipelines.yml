@@ -1,5 +1,5 @@
 # PHP as Linux Web App on Azure
-# Build, package and deploy your PHP project to Azure Linux Web App.
+# Build, package and deploy your PHP project to Azure Web App.
 # Add steps that run tests and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/php
 
@@ -8,16 +8,13 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '21530841-bcd1-4c0c-82a8-0b9d1e470115'
+  azureSubscription: 'Visual Studio Ultimate con MSDN (59dc1cc3-4719-4700-9b47-0a4c350bc072)'
 
   # Web app name
-  webAppName: 'test-appointments'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  webAppName: 'my-appointments'
 
   # Environment name
-  environmentName: 'test-appointments'
+  environmentName: 'my-appointments'
 
   # Root folder under which your composer.json file is available.
   rootFolder: $(System.DefaultWorkingDirectory)
@@ -29,8 +26,6 @@ stages:
       phpVersion: "7.3"
     jobs:
       - job: BuildJob
-        pool:
-          vmImage: $(vmImageName)
         steps:
           - script: |
               sudo update-alternatives --set php /usr/bin/php$(phpVersion)
@@ -51,30 +46,11 @@ stages:
               php artisan key:generate --force
             displayName: "Running Laravel config & optimizations"
           
-          - task: AzureMysqlDeployment@1
-            displayName: 'Execute Azure MySQL'
-            inputs:
-                  ConnectedServiceName: $(azureSubscription)
-                  ServerName: $(ServerName)
-                  DatabaseName: 
-                  SqlUsername: $(SqlUserName)
-                  SqlPassword: $(SqlPassword)
-                  TaskNameSelector: InlineSqlTask
-                  SqlInline: 'CREATE DATABASE IF NOT EXISTS myAppointments;'
-                  IpDetectionMethod: 'AutoDetect'
                     
 #Run on WebSSH from Azure App Service: 
 # php artisan migrate:refresh --seed --env=production --force --no-interaction
 # php artisan passport:install
 
-#####################################
-#Run CRON on WebSSH from Azure App Service:
-#1. apt-get update -qq 
-#2. apt-get install cron -yqq (only if cron service is not installed yet)
-#3. service cron start
-#4. crontab -e
-#5.  * * * * * cd /home/site/wwwroot && php artisan schedule:run >> /dev/null 2>&1
-#5(other option if above doesn't work). * * * * * cd /var/www/html/wwwroot && php artisan schedule:run >> /dev/null 2>&1
           - task: ArchiveFiles@2
             displayName: 'Archive files'
             inputs:
@@ -93,16 +69,13 @@ stages:
     condition: succeeded()
     jobs:
     - deployment: DeploymentJob
-      pool:
-        vmImage: $(vmImageName)
       environment: $(environmentName)
       strategy:
         runOnce:
           deploy:
-            steps:
-            - task: AzureWebApp@1
-              displayName: 'Deploy Azure Web App : test-appointments'
+            steps:             
+            - task: PublishBuildArtifacts@1
               inputs:
-                azureSubscription: $(azureSubscription)
-                appName: $(webAppName)
-                package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+                PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+                ArtifactName: 'drop'
+                publishLocation: 'Container'
