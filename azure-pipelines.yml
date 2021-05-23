@@ -58,29 +58,7 @@ stages:
               includeRootFolder: false
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-              replaceExistingArchive: true
-      
+              replaceExistingArchive: true      
           - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
             displayName: 'Upload package'
-            artifact: drop        
-  - stage: Deploy
-    displayName: 'Deploy Web App'
-    dependsOn: Build
-    condition: succeeded()
-    jobs:
-    - deployment: DeploymentJob
-      environment: $(environmentName)
-      strategy:
-        runOnce:
-          deploy:
-            steps:  
-            - task: CopyFiles@2
-              inputs:
-                SourceFolder: '$(Build.SourcesDirectory)'
-                Contents: '**'
-                TargetFolder: '$(Build.ArtifactStagingDirectory)'
-            - task: PublishBuildArtifacts@1
-              inputs:
-                PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-                ArtifactName: 'drop'
-                publishLocation: 'Container' 
+            artifact: drop ' 
