@@ -11,18 +11,25 @@ $dbname = "";
 // NOTE: Laravel has an issue with APN_ENV key when trying to connect to MySQL. Replace 'production' or 'local' with '127.0.0.1' in .env file
 // It solves the problem.
 
-
-// Parsing connnection string
-foreach ($_SERVER as $key => $value) {
-    if (strpos($key, "MYSQLCONNSTR_") !== 0) {
-        continue;
+if (env('APP_ENV') != 'local') {
+    // Parsing connnection string
+    foreach ($_SERVER as $key => $value) {
+        if (strpos($key, "MYSQLCONNSTR_") !== 0) {
+            continue;
+        }
+        
+        $servername = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+        $port = preg_replace("/^.*Data Source=(.+?);.*$/", "\\2", $value);
+        $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+        $username = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+        $password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
     }
-    
-    $servername = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
-    $port = preg_replace("/^.*Data Source=(.+?);.*$/", "\\2", $value);
-    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
-    $username = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
-    $password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+} else {
+    $servername = env('DB_HOST', '127.0.0.1');
+    $port = env('DB_PORT', '3306');
+    $dbname = env('DB_DATABASE', 'my-appointments');
+    $username = env('DB_USERNAME', 'root');
+    $password = env('DB_PASSWORD', '');
 }
 
 return [

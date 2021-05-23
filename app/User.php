@@ -82,7 +82,7 @@ class User extends Authenticatable
     {
         return $this->asDoctorAppointments()->where('status', 'Cancelada');
     }
-
+    
     public static function createPatient(array $data)
     {
         return self::Create([
