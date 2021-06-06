@@ -1,4 +1,4 @@
-var OrdersChart = (function() {
+$(function() {
 	var $chart = $('#chart-orders');
 
 	// Init chart
@@ -57,4 +57,4 @@ var OrdersChart = (function() {
 		initChart($chart);
 	}
 
-})();
+});
