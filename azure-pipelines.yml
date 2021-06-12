@@ -7,14 +7,6 @@ trigger:
   - main
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'Visual Studio Ultimate con MSDN (59dc1cc3-4719-4700-9b47-0a4c350bc072)'
-
-  # Web app name
-  webAppName: 'my-appointments'
-
-  # Environment name
-  environmentName: 'my-appointments'
 
   # Root folder under which your composer.json file is available.
   rootFolder: $(System.DefaultWorkingDirectory)
