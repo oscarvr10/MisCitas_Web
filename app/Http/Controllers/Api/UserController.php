@@ -16,4 +16,13 @@ class UserController extends Controller
         
         return response()->json(compact('success', 'data'));
     }
+
+    public function update(Request $request) 
+    {
+        $user = Auth::guard('api')->user();
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->save();
+    }
 }
