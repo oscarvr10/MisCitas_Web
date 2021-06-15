@@ -20,6 +20,8 @@ class ScheduleController extends Controller
         $date = $request->input('date');
         $doctorId = $request->input('doctor_id');
 
-        return $scheduleService->getAvailableIntervals($date, $doctorId);
+        $success = true;
+        $data = $scheduleService->getAvailableIntervals($date, $doctorId);
+        return response()->json(compact('success', 'data'));
     }
 }

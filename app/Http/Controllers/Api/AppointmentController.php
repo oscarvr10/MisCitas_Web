@@ -33,7 +33,13 @@ class AppointmentController extends Controller
             "status",
         ]);
 
-        return $appointments;
+        if($appointments)
+            $success =true;
+        else
+            $success = false;
+            
+        $data = $appointments;
+        return response()->json(compact('success', 'data'));
     }
 
     public function store(StoreAppointment $request) 
