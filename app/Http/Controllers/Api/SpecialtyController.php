@@ -9,7 +9,9 @@ class SpecialtyController extends Controller
 {
     public function index()
     {
-        return Specialty::all(['id', 'name']);
+        $success = true;
+        $data = Specialty::all(['id', 'name']);
+        return response()->json(compact('success', 'data'));
     }
 
     public function doctors(Specialty $specialty)

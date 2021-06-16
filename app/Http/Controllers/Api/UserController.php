@@ -11,8 +11,7 @@ class UserController extends Controller
     public function show() 
     {
         $success = true;
-        $user = Auth::guard('api')->user();
-        $data = compact('user');
+        $data = Auth::guard('api')->user();
         
         return response()->json(compact('success', 'data'));
     }
