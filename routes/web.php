@@ -49,16 +49,20 @@ Route::get('/', function () {
  });
 
  Route::middleware('auth')->group(function () {
+     // Profile
+     Route::get('/profile', 'UserController@edit');  
+     Route::post('/profile', 'UserController@update');  
+
      // Appointments
-     Route::get('/appointments/create', 'AppointmentController@create');
+     Route::get('/appointments/create', 'AppointmentController@create'); //Debe estar antes para evitar colisión
      Route::post('/appointments', 'AppointmentController@store');
-    
+
      Route::get('/appointments', 'AppointmentController@index');
-     Route::get('/appointments/{appointment}', 'AppointmentController@show');
-    
+     Route::get('/appointments/{appointment}', 'AppointmentController@show'); // Debe ir después
+
      Route::get('/appointments/{appointment}/cancel', 'AppointmentController@showCancelForm');
      Route::post('/appointments/{appointment}/cancel', 'AppointmentController@postCancel');
-     Route::post('/appointments/{appointment}/confirm', 'AppointmentController@postConfirm');   
+     Route::post('/appointments/{appointment}/confirm', 'AppointmentController@postConfirm'); 
  });
 
 

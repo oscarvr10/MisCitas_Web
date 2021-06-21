@@ -14,13 +14,6 @@
             </div>
         </div>
     </div>
-    @if (session('notification'))
-        <div class="card-body">
-            <div class="alert alert-success" role="alert">
-                {{ session('notification') }}
-            </div>
-        </div>
-    @endif
     <div class="card-body">
         @if ($errors->any())
         <div class="alert alert-danger" role="alert">
@@ -30,6 +23,11 @@
                 @endforeach
             </ul>
         </div>
+        @endif
+        @if (session('notification'))
+            <div class="alert alert-success" role="alert">
+                {{ session('notification') }}
+            </div>
         @endif
         <form action="{{ url('appointments') }}" method="post">
             @csrf

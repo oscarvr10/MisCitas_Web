@@ -4,6 +4,11 @@
     </a>
 </li>
 <li class="nav-item">
+    <a class="nav-link" href="/profile">
+        <i class="ni ni-circle-08 text-info"></i> Mi Perfil
+    </a>
+</li>
+<li class="nav-item">
     <a class="nav-link" href="/appointments">
         <i class="ni ni-time-alarm text-primary"></i> Mis Citas
     </a>
