@@ -54,8 +54,10 @@ Route::get('/', function () {
      Route::post('/profile', 'UserController@update');  
 
      // Appointments
-     Route::get('/appointments/create', 'AppointmentController@create'); //Debe estar antes para evitar colisión
-     Route::post('/appointments', 'AppointmentController@store');
+     Route::middleware('phone')->group(function () {
+        Route::get('/appointments/create', 'AppointmentController@create'); //Debe estar antes para evitar colisión
+        Route::post('/appointments', 'AppointmentController@store');
+     });
 
      Route::get('/appointments', 'AppointmentController@index');
      Route::get('/appointments/{appointment}', 'AppointmentController@show'); // Debe ir después
